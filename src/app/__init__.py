@@ -16,4 +16,11 @@ def create_app(test_config=None):
     from .db_connection import db
     db.init_app(app)
 
+    from .controllers import (
+        convert_controller,
+        token_controller)
+
+    app.register_blueprint(convert_controller.bp)
+    app.register_blueprint(token_controller.bp)
+
     return app
