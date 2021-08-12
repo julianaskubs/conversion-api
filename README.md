@@ -3,9 +3,11 @@ API to integrate currency, conversion and pricing globally.
 
 Written in Python 3.6
 
+# Routes
 
-POST http://127.0.0.1:5000/api/currency (
-accept a single currency or a list of currencies)
+`To create accepted currencies:`
+
+POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of dictionaries)
 
 ```
 {
@@ -26,5 +28,18 @@ accept a single currency or a list of currencies)
   }
 ]
 ```
+
+
+`To get accepted currency/currencies:`
+
+GET http://127.0.0.1:5000/api/currency/{currencyId}
+
+GET http://127.0.0.1:5000/api/currencies
+ 
+ 
+ `To delete accepted currency:`
+
+DELETE http://127.0.0.1:5000/api/currency/{currencyId}
+#
 
 
