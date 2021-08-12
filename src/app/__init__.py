@@ -18,9 +18,12 @@ def create_app(test_config=None):
 
     from .controllers import (
         convert_controller,
+        currency_controller,
         token_controller)
 
     app.register_blueprint(convert_controller.bp)
+    app.register_blueprint(currency_controller.bp)
     app.register_blueprint(token_controller.bp)
+
 
     return app
