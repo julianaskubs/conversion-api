@@ -15,8 +15,11 @@ GET http://127.0.0.1:5000/api/convert?amount={amount_format}
 
 `To add currencies:`
 
-POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of dictionaries)
+```
+POST http://127.0.0.1:5000/api/currency
+```
 
+**Payload: dictionary or array of dictionaries**
 ```
 {
  "currencyId": "ALL",
@@ -40,17 +43,25 @@ POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of diction
 
 `To get currency/currencies:`
 
+```
 GET http://127.0.0.1:5000/api/currency/{currencyId}
+```
 
+```
 GET http://127.0.0.1:5000/api/currencies
+```
  
  
  `To delete currency:`
 
+```
 DELETE http://127.0.0.1:5000/api/currency/{currencyId}
+```
 
 #
 
 `To get references about (for example: to search how is the **currencyId** or the **currencyName** from a country.`
 
+```
 GET http://127.0.0.1:5000/api/references/
+```
