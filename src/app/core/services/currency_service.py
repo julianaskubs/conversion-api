@@ -4,6 +4,7 @@ from app.core.response import *
 from app.data import queries
 from db_connection.db import get_db, close_db
 import json
+import requests
 
 class CurrencyService:
 
@@ -16,7 +17,8 @@ class CurrencyService:
 
             if row is None:
                 return create_response_msg(
-                    f"Currency '{currency_id}' not found.", 404)
+                    f"Currency '{currency_id}' not found.",
+                    requests.codes.not_found)
 
             currency_str = json.dumps(dict(row))
             return json.loads(currency_str)
@@ -33,7 +35,7 @@ class CurrencyService:
             db.execute(queries.DEL_CURRENCY_BY_ID, (currency_id,))
             db.commit()
             close_db()
-            return create_response_msg('ok', 200)
+            return create_response_msg('ok', requests.codes.ok)
 
         except Exception as e:
             close_db()
@@ -70,7 +72,7 @@ class CurrencyService:
             if not is_created:
                 return server_error_response_msg()
 
-            return create_response_msg('ok', 201)
+            return create_response_msg('ok', requests.codes.created)
 
         except Exception as e:
             print(e)
@@ -97,15 +99,25 @@ class CurrencyService:
 
     def check_payload(self, payload):
         status_code = 400
+        message = None
 
         if not isinstance(payload, list):
             return create_response_msg(
                 'Payload must be a dict or a list of dict format',
                 status_code)
 
+        validator = CurrencyValidator()
         for p in payload:
-            is_valid, message = CurrencyValidator(p).validate_payload()
 
+            # validate currency code
+            is_valid, message = validator.validate_currency_code(
+                p['currencyId'])
+
+            # validate payload
+            if is_valid:
+                is_valid, message = validator.validate_payload(p)
+
+            # validate unique fields
             if is_valid:
                 is_valid, message = self.validate_unique_fields(
                     p['currencyId'], p['currencyName'])
@@ -139,9 +151,10 @@ class CurrencyService:
                     f"Already exist a currencyName '{currency_name}' registered.")
 
         except Exception as e:
-            print(e)
             close_db()
-            return False, None
+            print(e)
+            return (False, None)
+
 
         close_db()
-        return True, None
+        return (True, None)

@@ -12,8 +12,8 @@ class CurrencyController:
         '''
             Create a currency tuple in the database
             Payload:
-                str<currencyId>
-                str<currencyName>
+                str: currencyId
+                str: currencyName
         '''
         try:
             payload = request.json
@@ -52,10 +52,7 @@ class CurrencyController:
     @bp.route('/currencies', methods=['GET'])
     def get_currencies():
         '''
-            Create a currency tuple in the database
-            Payload:
-                str<currency_id>
-                str<currency_name>
+            Return saved informations about the currencies from database
         '''
         response = CurrencyService().service_get_currencies()
         # if not isinstance(response, list):

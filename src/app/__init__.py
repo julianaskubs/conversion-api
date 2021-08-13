@@ -13,7 +13,7 @@ def create_app(test_config=None):
     except Exception as e:
         print(e)
 
-    from .db_connection import db
+    from db_connection import db
     db.init_app(app)
 
     from .controllers import (

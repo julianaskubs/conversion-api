@@ -15,5 +15,6 @@ class ReferenceService:
 
         except Exception as e:
             print(e)
-            return server_error_response_msg()
+
+        return server_error_response_msg()
 
