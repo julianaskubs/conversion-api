@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from src.app.core.services.currency_service import CurrencyService
+from app.core.services.currency_service import CurrencyService
 from flask import Blueprint, request
-from src.app.core.response import *
+from app.core.response import *
 
 bp = Blueprint('currency', __name__, url_prefix='/api')
 

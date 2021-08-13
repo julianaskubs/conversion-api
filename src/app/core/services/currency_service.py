@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from src.app.core.currency_validator import CurrencyValidator
-from src.app.core.response import *
-from src.app.data import queries
-from src.db_connection.db import get_db, close_db
+from app.core.currency_validator import CurrencyValidator
+from app.core.response import *
+from app.data import queries
+from db_connection.db import get_db, close_db
 import json
 
 class CurrencyService:
