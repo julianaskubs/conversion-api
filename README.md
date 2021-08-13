@@ -13,7 +13,7 @@ GET http://127.0.0.1:5000/api/convert?amount={amount_format}
 
 #
 
-`To create accepted currencies:`
+`To add currencies:`
 
 POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of dictionaries)
 
@@ -38,14 +38,14 @@ POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of diction
 ```
 
 
-`To get accepted currency/currencies:`
+`To get currency/currencies:`
 
 GET http://127.0.0.1:5000/api/currency/{currencyId}
 
 GET http://127.0.0.1:5000/api/currencies
  
  
- `To delete accepted currency:`
+ `To delete currency:`
 
 DELETE http://127.0.0.1:5000/api/currency/{currencyId}
 
