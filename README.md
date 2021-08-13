@@ -42,4 +42,6 @@ GET http://127.0.0.1:5000/api/currencies
 DELETE http://127.0.0.1:5000/api/currency/{currencyId}
 #
 
+`To get references about countries respective currencies:`
 
+GET http://127.0.0.1:5000/api/references/
