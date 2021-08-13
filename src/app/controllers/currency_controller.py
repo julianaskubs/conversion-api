@@ -58,4 +58,4 @@ class CurrencyController:
         # if not isinstance(response, list):
         if not response:
             return server_error_response_msg()
-        return response
+        return jsonify(response)
