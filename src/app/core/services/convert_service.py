@@ -53,7 +53,10 @@ class ConvertService:
                     break
                     return server_error_response_msg()
 
-                result[currency_id] = converted_amount
+                result[currency_id] = "{:,.2f}".format(
+                    converted_amount).replace(
+                    ",", "X").replace(
+                    ".", ",").replace("X", ".")
 
             return jsonify(dict(results=result))
 
@@ -65,7 +68,7 @@ class ConvertService:
     def convert_amount_to_currency(self, amount, currency_from, currency_to):
         try:
             endpoint = 'convert'
-            convert_key= f'{currency_to}_{currency_from}'
+            convert_key= f'{currency_from}_{currency_to}'
             params = f"q={convert_key}"
 
             api = ExternalReferenceAPI()
@@ -73,7 +76,7 @@ class ConvertService:
 
             if response:
                 conversion_rate = response.get_content().get(convert_key)
-                return self.get_converted_amount(
+                return self.convert(
                     amount,
                     conversion_rate)
 
@@ -82,11 +85,11 @@ class ConvertService:
         return None
 
 
-    def get_converted_amount(self, amount: str, conversion_rate: float):
+    def convert(self, initial_amount: str, factor: float):
         try:
-            amount = float(amount)/100
-            result = round(amount * conversion_rate, 2)
-            return "{:,.2f}".format(result).replace(",", "X").replace(".", ",").replace("X", ".")
+            initial_amount = float(initial_amount) / 100
+            amount = round(initial_amount * factor, 2)
+            return amount
         except Exception as e:
             print(e)
         return None
