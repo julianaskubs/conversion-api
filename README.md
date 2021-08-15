@@ -5,10 +5,21 @@ Written in Python 3.6
 
 # Routes
 
-`To create accepted currencies:`
+`To convert from BRL amount to registered currencies:`
+```
+GET http://127.0.0.1:5000/api/convert?amount={amount_format}
+```
+**If amount equal R$ 1,00 (for example), amount_format equal 100.**
 
-POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of dictionaries)
+#
 
+`To add currencies:`
+
+```
+POST http://127.0.0.1:5000/api/currency
+```
+
+**Payload: dictionary or array of dictionaries**
 ```
 {
  "currencyId": "ALL",
@@ -30,18 +41,27 @@ POST http://127.0.0.1:5000/api/currency (payload: dictionary or array of diction
 ```
 
 
-`To get accepted currency/currencies:`
+`To get currency/currencies:`
 
+```
 GET http://127.0.0.1:5000/api/currency/{currencyId}
+```
 
+```
 GET http://127.0.0.1:5000/api/currencies
+```
  
  
- `To delete accepted currency:`
+ `To delete currency:`
 
+```
 DELETE http://127.0.0.1:5000/api/currency/{currencyId}
+```
+
 #
 
-`To get references about countries respective currencies:`
+`To get references about (for example: to search how is the **currencyId** or the **currencyName** from a country.`
 
+```
 GET http://127.0.0.1:5000/api/references/
+```
