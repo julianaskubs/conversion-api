@@ -83,3 +83,15 @@ The example below is based in Ubuntu version 18.04, Python version 3.6, Pip vers
 # To Run Tests Locally:
 10. Go to **src** project folder
 11. Run the command: **pytest**
+
+# To Run with a Docker Image:
+
+To run using docker container, **It's not necessary** to previously have the Python version 3.6, Pip version 3 and Virtual Environment installed.
+
+
+1. It's necessary to previously have the **Docker** installed
+2. Clone this repo and go to the **root** of project folder
+3. Check if has a **Dockerfile** in the folder
+4. Build the image: **docker build -t flask-api:latest .** (flask-api is only a tag name for image)
+5. Search for IMAGE running: **docker images**
+
