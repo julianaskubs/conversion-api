@@ -9,7 +9,7 @@ Written in Python 3.6
 ```
 GET http://127.0.0.1:5000/api/convert?amount={amount_format}
 ```
-**If amount equal R$ 1,00 (for example), send amount_format equal 100.**
+**If amount equal R$ 1,00 (for example), send ?amount=100.**
 
 #
 
