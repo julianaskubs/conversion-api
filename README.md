@@ -7,9 +7,9 @@ Written in Python 3.6
 
 `To convert from BRL amount to registered currencies:`
 ```
-GET http://127.0.0.1:5000/api/convert?amount={amount_format}
+GET http://127.0.0.1:5000/api/convert?amount={value-without-dot-or-comma}
 ```
-**If amount equal R$ 1,00 (for example), send ?amount=100.**
+If amount equal **R$ 1,00** (for example), request **http://127.0.0.1:5000/api/convert/?amount=100.**
 
 #
 
@@ -84,7 +84,7 @@ The example below is based in Ubuntu version 18.04, Python version 3.6, Pip vers
 10. Go to **src** project folder
 11. Run the command: **pytest**
 
-# To Run with a Docker Image:
+# To Run using Docker Image:
 
 To run using docker container, **It's not necessary** to previously have the Python version 3.6, Pip version 3 and Virtual Environment installed.
 
