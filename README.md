@@ -1,17 +1,9 @@
 # conversion-api
-API to integrate currency, conversion and pricing globally.
+Currency, conversion and pricing.
 
 Written in Python 3.6
 
 # Routes
-
-`To convert from BRL amount to registered currencies:`
-```
-GET http://127.0.0.1:5000/api/convert?amount={value-without-dot-or-comma}
-```
-If amount equal **R$ 1,00** (for example), request **http://127.0.0.1:5000/api/convert/?amount=100.**
-
-#
 
 `To add currencies:`
 
@@ -19,7 +11,7 @@ If amount equal **R$ 1,00** (for example), request **http://127.0.0.1:5000/api/c
 POST http://127.0.0.1:5000/api/currency
 ```
 
-**Payload: dictionary or array of dictionaries**
+**Payload for a single currency**
 ```
 {
  "currencyId": "ALL",
@@ -27,6 +19,7 @@ POST http://127.0.0.1:5000/api/currency
 }
 ```
 
+**Payload: for add many currencies**
 ```
 [
   {
@@ -40,26 +33,32 @@ POST http://127.0.0.1:5000/api/currency
 ]
 ```
 
+#
+`To get currencies and currency by id:`
 
-`To get currency/currencies:`
+```
+GET http://127.0.0.1:5000/api/currencies
+```
 
 ```
 GET http://127.0.0.1:5000/api/currency/{currencyId}
 ```
 
+#
+`To convert from BRL amount to registered currencies:`
 ```
-GET http://127.0.0.1:5000/api/currencies
+GET http://127.0.0.1:5000/api/convert?amount={value-without-dot-or-comma}
 ```
- 
- 
- `To delete currency:`
+If amount equal **R$ 1,00** (for example), request **http://127.0.0.1:5000/api/convert/?amount=100.**
+
+#
+ `To delete a currency:`
 
 ```
 DELETE http://127.0.0.1:5000/api/currency/{currencyId}
 ```
 
 #
-
 `To get references about (for example: to search how is the **currencyId** or the **currencyName** from a country.`
 
 ```
@@ -90,7 +89,7 @@ To run using docker container, **It's not necessary** to previously have the Pyt
 
 1. It's necessary to previously have the **Docker** installed
 2. Clone this repo and go to **root** of project folder
-3. Build the image: **docker build -t flask-api:latest .** (flask-api is only a tag name for the image)
+3. Build the image: **docker build -t flask-api:latest .**
 4. Run container: **docker run -d -p 5000:5000 flask-api**
-5. Open Postman (or another app to API testing) and **send requests** according **Routes** Above
+5. Open Postman (or another app to API testing) and **send requests** according **routes** above.
 
