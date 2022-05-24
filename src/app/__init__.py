@@ -18,10 +18,12 @@ from db_connection import db
 db.init_app(app)
 
 from .controllers import (
+    healthcheck,
     convert_controller,
     currency_controller,
     reference_controller)
 
+app.register_blueprint(healthcheck.bp)
 app.register_blueprint(convert_controller.bp)
 app.register_blueprint(currency_controller.bp)
 app.register_blueprint(reference_controller.bp)
