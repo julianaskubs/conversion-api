@@ -64,32 +64,3 @@ DELETE http://127.0.0.1:5000/api/currency/{currencyId}
 ```
 GET http://127.0.0.1:5000/api/references/
 ```
-
-# To Run Locally 
-
-The example below is based in Ubuntu version 18.04, Python version 3.6, Pip version 3 and Virtual Environments.
-
-1. You must create a **virtual environment** (using python 3.6+) to install the packages of the project
-2. It's necessary to previously have the **pip** installed for **python3** specific version
-3. Clone this repo and go to **src** project folder
-4. Install packages using the cmd **pip install -r requirements.txt**
-5. Export environment: **export FLASK_APP=app**
-6. Export environment: **export FLASK_ENV=development**
-7. Run the command to init database: **flask init-db**
-8. Run the command to run the project: **flask run**
-9. Open Postman (or another app to API testing) and **send requests** according **Routes** Above
-
-# To Run Tests Locally:
-10. Go to **src** project folder
-11. Run the command: **pytest**
-
-# To Run using Docker Image:
-
-To run using docker container, **It's not necessary** to previously have the Python version 3.6, Pip version 3 and Virtual Environment installed.
-
-1. It's necessary to previously have the **Docker** installed
-2. Clone this repo and go to **root** of project folder
-3. Build the image: **docker build -t flask-api:latest .**
-4. Run container: **docker run -d -p 5000:5000 flask-api**
-5. Open Postman (or another app to API testing) and **send requests** according **routes** above.
-
