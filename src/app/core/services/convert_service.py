@@ -1,95 +1,86 @@
 # -*- coding: utf-8 -*-
-from app.core.external_reference_api import ExternalReferenceAPI
-from app.core.response import *
-from app.data import queries
+import logging
+import cachetools.func
+from app.settings import *
+from app.core.external_api import CurrConvAPI
 from .currency_service import CurrencyService
-from app.core.currency_validator import CurrencyValidator
-from db_connection.db import get_db, close_db
-from flask import request
-import json
-import requests
+from app.core.req_validator import RequestValidator
+from werkzeug.exceptions import BadRequest
 
-DEFAULT_CURRENCY = 'BRL'
 
-class ConvertService:
+class ConvertService(object):
+    def process_handler(self, req) -> dict:
+        amount = req.args.get('amount', None)
+        if not amount:
+            raise BadRequest("An 'amount' queryStr param should be provided.")
 
-    def service_convert(self, request):
-        status_code = 400
+        currency_from = req.args.get('currencyCode', DEFAULT_CURRENCY)
+
+        logging.info(
+            "Processing: amount: %s, currency: %s", amount, currency_from
+        )
+
+        if currency_from and currency_from != DEFAULT_CURRENCY:
+            self.validate_currency(currency_from)
+
         result = dict()
 
-        try:
-            amount = request.args.get('amount', None)
-            if not amount:
-                return create_response_msg(
-                    "An 'amount' query string should be provided.",
-                    400
-                )
+        logging.info(
+            "Getting currencies (pre-registered) from database"
+        )
+        db_currencies = CurrencyService().process_handler_get_currencies()
 
-            currency_from = request.args.get('currencyCode', None)
+        for c in db_currencies['results']:
+            currency_id = c.get('currencyId')
 
-            if currency_from and currency_from != DEFAULT_CURRENCY:
-                is_valid, message = CurrencyValidator().validate_currency_code(
-                    currency_from)
+            logging.info(
+                "Calling external API to convert currency: %s,", currency_id
+            )
+            converted_amount = self.convert_amount_to_currency(
+                amount,
+                currency_from,
+                currency_id
+            )
 
-                if not is_valid:
-                    if not message:
-                        return server_error_response_msg()
-                    return create_response_msg(message, status_code)
-            else:
-                currency_from = DEFAULT_CURRENCY
-
-            # get currencies from database
-            db_currencies = CurrencyService().service_get_currencies()
-
-            for c in db_currencies['results']:
-                currency_id = c.get('currencyId')
-                # external_reference_api
-                converted_amount = self.convert_amount_to_currency(
-                    amount,
-                    currency_from,
-                    currency_id)
-
-                if not converted_amount:
-                    break
-                    return server_error_response_msg()
-
-                result[currency_id] = "{:,.2f}".format(
-                    converted_amount).replace(
+            result[currency_id] = "{:,.2f}".format(
+                converted_amount).replace(
                     ",", "X").replace(
                     ".", ",").replace("X", ".")
 
-            return jsonify(dict(results=result))
+        logging.info(
+            "Finished request processing. Result: %s", str(result)
+        )
+        return dict(results=result)
 
-        except Exception as e:
-            print(e)
-        return server_error_response_msg()
+    @staticmethod
+    def validate_currency(currency_from):
+        RequestValidator().validate_currency_code(currency_from)
 
-
+    @cachetools.func.ttl_cache(maxsize=10240, ttl=600)
     def convert_amount_to_currency(self, amount, currency_from, currency_to):
         try:
-            endpoint = 'convert'
-            convert_key= f'{currency_from}_{currency_to}'
+            convert_key = f'{currency_from}_{currency_to}'
             params = f"q={convert_key}"
 
-            api = ExternalReferenceAPI()
-            response = api.get(endpoint, params)
+            response = CurrConvAPI().get(endpoint='convert', query_str=params)
 
-            if response:
+            if response.get_status() == 200:
                 conversion_rate = response.get_content().get(convert_key)
                 return self.convert(
                     amount,
                     conversion_rate)
+            else:
+                raise Exception(
+                    "Bad response from external API:"
+                    + f" Status Codes {str(response.get_status())}. Message: {str(response.get_content())}"
+                )
+        except Exception:
+            raise
 
-        except Exception as e:
-            print(e)
-        return None
-
-
-    def convert(self, initial_amount: str, factor: float):
+    @staticmethod
+    def convert(initial_amount: str, factor: float) -> float:
         try:
             initial_amount = float(initial_amount) / 100
-            amount = round(initial_amount * factor, 2)
-            return amount
-        except Exception as e:
-            print(e)
-        return None
+            return round(initial_amount * factor, 2)
+        except Exception:
+            raise

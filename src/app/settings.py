@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
-EXTERNAL_REF_API = 'free.currconv.com'
+API_KEY = '5986ce922a0db026878f'
+API_DOMAIN = 'free.currconv.com'
+DEFAULT_CURRENCY = 'BRL'
 
-API_KEY = 'fcb19f59033be498db8a'

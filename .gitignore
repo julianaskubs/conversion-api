@@ -6,3 +6,9 @@ db.sqlite3
 *.xml
 *.iml
 instance/
+
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache
+
